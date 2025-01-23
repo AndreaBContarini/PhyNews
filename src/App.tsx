@@ -4,7 +4,6 @@ import { Atom, Brain, Volume2, BarChart, ArrowRight } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Auth from './pages/Auth';
-import Topics from './pages/Topics';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Dashboard from './pages/Dashboard';
@@ -58,27 +57,34 @@ function HeroSection() {
   return (
     <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8 text-center">
       <div className="space-y-8">
-        <div className="relative inline-block">
-          <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-20 rounded-full"></div>
-          <Atom className="w-20 h-20 mx-auto text-blue-500 relative" />
+        <div className="relative inline-block animate-fade-in-down">
+          <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-20 rounded-full animate-pulse"></div>
+          <Atom className="w-20 h-20 mx-auto text-blue-500 relative animate-spin-slow" />
         </div>
-        <h1 className="text-5xl font-bold tracking-tight">
-          Scientific News, <span className="text-blue-500">Simplified</span>
-        </h1>
-        <p className="max-w-2xl mx-auto text-xl text-gray-300">
-          Your personalized research digest in audio format. AI-powered summaries across Physics,
-          Economics, Computer Science, Engineering, and more.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="space-y-4">
+          <h1 className="text-5xl font-bold tracking-tight">
+            <span className="inline-block animate-fade-in-up">
+              Scientific News
+            </span>{' '}
+            <span className="inline-block text-blue-500 animate-fade-in-up animation-delay-300">
+              Simplified
+            </span>
+          </h1>
+          <p className="max-w-2xl mx-auto text-xl text-gray-300 animate-fade-in-up animation-delay-500">
+            Your personalized research digest in audio format. AI-powered summaries across Physics,
+            Economics, Computer Science, Engineering, and more.
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animation-delay-700">
           <Link
             to="/auth?mode=signup"
-            className="px-8 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+            className="px-8 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition transform hover:scale-105"
           >
             Start Free Trial
           </Link>
           <Link
             to="/auth?mode=login"
-            className="px-8 py-3 text-lg font-medium text-blue-400 border border-blue-400 rounded-lg hover:bg-blue-400/10 transition"
+            className="px-8 py-3 text-lg font-medium text-blue-400 border border-blue-400 rounded-lg hover:bg-blue-400/10 transition transform hover:scale-105"
           >
             Login
           </Link>
@@ -135,7 +141,6 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/auth" element={<Auth />} />
-          <Route path="/topics" element={<Topics />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/dashboard" element={<Dashboard />} />

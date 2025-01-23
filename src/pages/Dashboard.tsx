@@ -13,14 +13,14 @@ import {
 } from 'lucide-react';
 
 const topics = [
-  { id: 'physics', name: 'Physics', icon: Atom },
-  { id: 'economics', name: 'Economics', icon: LineChart },
-  { id: 'cs', name: 'Computer Science', icon: Code },
-  { id: 'eess', name: 'Electrical Engineering', icon: Cpu },
-  { id: 'stats', name: 'Statistics', icon: BarChart2 },
-  { id: 'q-fin', name: 'Quantitative Finance', icon: DollarSign },
-  { id: 'q-bio', name: 'Quantitative Biology', icon: Dna },
-  { id: 'math', name: 'Mathematics', icon: Hash }
+  { id: 'physics', name: 'Physics', icon: Atom, description: 'Latest discoveries in quantum mechanics, relativity, and more' },
+  { id: 'economics', name: 'Economics', icon: LineChart, description: 'Research in economic theory and empirical studies' },
+  { id: 'cs', name: 'Computer Science', icon: Code, description: 'Advances in algorithms, AI, and software engineering' },
+  { id: 'eess', name: 'Electrical Engineering', icon: Cpu, description: 'Research in circuits, systems, and signal processing' },
+  { id: 'stats', name: 'Statistics', icon: BarChart2, description: 'Developments in statistical methods and theory' },
+  { id: 'q-fin', name: 'Quantitative Finance', icon: DollarSign, description: 'Mathematical approaches to financial markets' },
+  { id: 'q-bio', name: 'Quantitative Biology', icon: Dna, description: 'Mathematical modeling in biological systems' },
+  { id: 'math', name: 'Mathematics', icon: Hash, description: 'Pure and applied mathematical research' }
 ];
 
 export default function Dashboard() {
@@ -37,44 +37,63 @@ export default function Dashboard() {
     checkAuth();
   }, [navigate]);
 
+  const handleTopicSelect = async (topicId: string) => {
+    setSelectedTopic(topicId);
+    // Non navighiamo più direttamente, lasciamo che l'utente clicchi su View Articles
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 pt-20 px-4">
-      <div className="max-w-4xl mx-auto py-12">
-        <h1 className="text-3xl font-bold text-center mb-8">Choose Your Topic</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Choose Your Research Field</h1>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Select your preferred field of study. You'll receive daily summaries and audio versions
+            of the latest research papers in your chosen area.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {topics.map((topic) => {
             const Icon = topic.icon;
+            const isSelected = selectedTopic === topic.id;
+            
             return (
-              <button
-                key={topic.id}
-                onClick={() => setSelectedTopic(topic.id)}
-                className={`p-6 rounded-xl text-center transition-all ${
-                  selectedTopic === topic.id
-                    ? 'bg-blue-600 scale-105'
-                    : 'bg-gray-800/50 hover:bg-gray-800 hover:scale-105'
-                }`}
-              >
-                <Icon className="w-12 h-12 mx-auto mb-4" />
-                <h2 className="text-xl font-semibold">{topic.name}</h2>
-              </button>
+              <div key={topic.id} className="flex flex-col">
+                <button
+                  onClick={() => handleTopicSelect(topic.id)}
+                  className={`p-6 rounded-xl text-center transition-all duration-300 ${
+                    isSelected
+                      ? 'bg-blue-600 scale-102 shadow-lg shadow-blue-500/30 ring-2 ring-blue-400'
+                      : 'bg-gray-800/50 hover:bg-gray-800/80 hover:scale-101'
+                  }`}
+                >
+                  <Icon className={`w-12 h-12 mx-auto mb-4 transition-colors duration-300 ${
+                    isSelected ? 'text-white' : 'text-blue-500'
+                  }`} />
+                  <h2 className="text-xl font-semibold mb-3">{topic.name}</h2>
+                  <p className={`text-sm leading-relaxed transition-colors duration-300 ${
+                    isSelected ? 'text-blue-100' : 'text-gray-300'
+                  }`}>
+                    {topic.description}
+                  </p>
+                </button>
+                
+                {/* Selection info and button appear below the card */}
+                {isSelected && (
+                  <div className="mt-3 text-center animate-fade-in">
+                    <button
+                      onClick={() => navigate(`/articles/${topic.id}`)}
+                      className="w-full px-6 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 font-medium transform hover:translate-y-[-2px]"
+                    >
+                      View Articles
+                    </button>
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
-        
-        {selectedTopic && (
-          <div className="mt-8 text-center">
-            <p className="text-gray-400 mb-4">
-              Selected: <span className="text-white font-semibold">{
-                topics.find(t => t.id === selectedTopic)?.name
-              }</span>
-            </p>
-            <button
-              className="px-8 py-3 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
-            >
-              View Articles
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

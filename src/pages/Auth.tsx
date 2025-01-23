@@ -6,9 +6,11 @@ import { Loader2, Mail, ArrowLeft } from 'lucide-react';
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resetSent, setResetSent] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const mode = searchParams.get('mode') === 'login' ? 'login' : 'signup';
@@ -25,8 +27,17 @@ export default function Auth() {
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+    setPasswordError(null);
+    
+    if (mode === 'signup') {
+      if (password !== confirmPassword) {
+        setPasswordError('Passwords do not match');
+        return;
+      }
+    }
+    
+    setLoading(true);
 
     try {
       const { error: authError, data } = mode === 'signup'
@@ -131,10 +142,34 @@ export default function Auth() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="••••••••"
+                  placeholder="Password"
                   minLength={6}
                 />
               </div>
+
+              {mode === 'signup' && (
+                <div>
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">
+                    Confirm Password
+                  </label>
+                  <input
+                    id="confirmPassword"
+                    type="password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Confirm Password"
+                    minLength={6}
+                  />
+                </div>
+              )}
+
+              {passwordError && (
+                <div className="text-red-500 text-sm bg-red-500/10 p-3 rounded-md">
+                  {passwordError}
+                </div>
+              )}
 
               {error && (
                 <div className="text-red-500 text-sm bg-red-500/10 p-3 rounded-md">
