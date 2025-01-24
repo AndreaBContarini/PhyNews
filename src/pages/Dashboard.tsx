@@ -11,9 +11,8 @@ import {
   Dna, 
   Hash 
 } from 'lucide-react';
-
 const topics = [
-  { id: 'physics', name: 'Physics', icon: Atom, description: 'Latest discoveries in quantum mechanics, relativity, and more' },
+  { id: 'physics', name: 'Physics', icon: Atom, description: 'Latest discoveries in Particle Physics, Biological Physics, Astrophysics, and more...' },
   { id: 'economics', name: 'Economics', icon: LineChart, description: 'Research in economic theory and empirical studies' },
   { id: 'cs', name: 'Computer Science', icon: Code, description: 'Advances in algorithms, AI, and software engineering' },
   { id: 'eess', name: 'Electrical Engineering', icon: Cpu, description: 'Research in circuits, systems, and signal processing' },

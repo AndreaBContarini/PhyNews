@@ -7,10 +7,17 @@
     animation-delay: 1000ms;
   }
   .animation-delay-500 {
-    animation-delay: 2000ms;
+    animation-delay: 1000ms;
   }
   .animation-delay-700 {
-    animation-delay: 3000ms;
+    animation-delay: 1000ms;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-gpu {
+    transform-style: preserve-3d;
+    backface-visibility: visible;
   }
 }
 

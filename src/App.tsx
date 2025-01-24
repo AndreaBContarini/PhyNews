@@ -57,9 +57,9 @@ function HeroSection() {
   return (
     <section className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8 text-center">
       <div className="space-y-8">
-        <div className="relative inline-block animate-fade-in-down">
+        <div className="relative inline-block animate-fade-in-down perspective-1000">
           <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-20 rounded-full animate-pulse"></div>
-          <Atom className="w-20 h-20 mx-auto text-blue-500 relative animate-spin-slow" />
+          <Atom className="w-20 h-20 mx-auto text-blue-500 relative animate-spin-3d transform-gpu" />
         </div>
         <div className="space-y-4">
           <h1 className="text-5xl font-bold tracking-tight">

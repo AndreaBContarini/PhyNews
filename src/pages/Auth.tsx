@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-// import { supabase } from './supabaseClient';
-import { createClient } from '@supabase/supabase-js';
-
-
-
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL!;
-
-const supabaseKey = process.env.REACT_APP_SUPABASE_KEY!;
-
-
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
-;
+import { supabase } from '../lib/supabase';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -60,28 +48,44 @@ export default function Auth() {
   };
 
   return (
-    <div>
-      <h2>{mode === 'login' ? 'Login' : 'Sign up'}</h2>
-      <form onSubmit={handleAuth}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Loading...' : mode === 'login' ? 'Login' : 'Sign up'}
-        </button>
-      </form>
-      {error && <p>{error}</p>}
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 pt-20 px-4">
+      <div className="max-w-md mx-auto bg-gray-800/50 rounded-xl p-8 backdrop-blur-sm">
+        <h2 className="text-3xl font-bold text-center mb-8">
+          {mode === 'login' ? 'Welcome Back' : 'Create Account'}
+        </h2>
+        <form onSubmit={handleAuth} className="space-y-6">
+          <div>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'Loading...' : mode === 'login' ? 'Login' : 'Sign up'}
+          </button>
+        </form>
+        {error && (
+          <p className="mt-4 text-red-500 text-center">{error}</p>
+        )}
+      </div>
     </div>
   );
 }
