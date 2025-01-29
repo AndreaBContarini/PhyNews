@@ -2,17 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.atom-spin {
+  animation: spin 0.08s linear infinite;
+}
+
 @layer utilities {
   .animation-delay-300 {
     animation-delay: 1000ms;
   }
-  .animation-delay-500 {
-    animation-delay: 1000ms;
-  }
-  .animation-delay-700 {
-    animation-delay: 1000ms;
-  }
-  .perspective-1000 {
+  .perspective-300 {
     perspective: 1000px;
   }
   .transform-gpu {
@@ -27,5 +30,5 @@
 }
 
 .animate-fade-in {
-  animation: fadeIn 2s ease-out forwards;
+  animation: fadeIn 1s ease-out forwards;
 }

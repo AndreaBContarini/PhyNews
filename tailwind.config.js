@@ -8,6 +8,9 @@ export default {
         'fade-in-up': 'fadeInUp 2s ease-out forwards',
         'spin-3d': 'spin3d 15s linear infinite',
         'pulse': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'slide-in-from-left': 'slide-in-from-left 0.8s ease-out forwards',
+        'slide-in-from-right': 'slide-in-from-right 0.8s ease-out forwards',
+        'fast-spin': 'spin 0.2s linear infinite'
       },
       keyframes: {
         fadeIn: {
@@ -21,6 +24,18 @@ export default {
         spin3d: {
           '0%': { transform: 'rotateY(0deg)' },
           '100%': { transform: 'rotateY(360deg)' },
+        },
+        'slide-in-from-left': {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' }
+        },
+        'slide-in-from-right': {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' }
+        },
+        spin: {
+          'from': { transform: 'rotate(0deg)' },
+          'to': { transform: 'rotate(360deg)' }
         }
       },
     },

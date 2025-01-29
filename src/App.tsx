@@ -1,57 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Atom, Brain, Volume2, BarChart, ArrowRight } from 'lucide-react';
+import { Atom, Brain, Volume2, BarChart } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Auth from './pages/Auth';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Dashboard from './pages/Dashboard';
+import Physics from './pages/Physics';
+import PhysicsCategory from './pages/PhysicsCategory';
+import CSCategories from './pages/CSCategories';
+import AstrophysicsCategories from './pages/AstrophysicsCategories';
 import CookieBanner from './components/CookieBanner';
-
-function ComparisonSection() {
-  return (
-    <section className="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <h2 className="text-3xl font-bold text-center mb-12">Old Way vs New Way</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="p-6 rounded-xl bg-gray-800/50">
-          <h3 className="text-xl font-semibold mb-4">Traditional Research</h3>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              <span className="text-red-500 mr-2">✕</span>
-              <span>Hours spent reading full papers</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-red-500 mr-2">✕</span>
-              <span>Information overload and burnout</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-red-500 mr-2">✕</span>
-              <span>Limited to reading during work hours</span>
-            </li>
-          </ul>
-        </div>
-        <div className="p-6 rounded-xl bg-blue-600/10 border border-blue-500/20">
-          <h3 className="text-xl font-semibold mb-4">PhyNews Way</h3>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
-              <span>Concise, AI-powered summaries</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
-              <span>Listen while commuting or exercising</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-green-500 mr-2">✓</span>
-              <span>Stay updated across multiple fields</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function HeroSection() {
   return (
@@ -88,6 +48,50 @@ function HeroSection() {
           >
             Login
           </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ComparisonSection() {
+  return (
+    <section className="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <h2 className="text-3xl font-bold text-center mb-12">Old Way vs New Way</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="p-6 rounded-xl bg-gray-800/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-gray-700/30">
+          <h3 className="text-xl font-semibold mb-4">Traditional Research</h3>
+          <ul className="space-y-4">
+            <li className="flex items-start">
+              <span className="text-red-500 mr-2">✕</span>
+              <span>Hours spent reading full papers</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-red-500 mr-2">✕</span>
+              <span>Information overload and burnout</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-red-500 mr-2">✕</span>
+              <span>Limited to reading during work hours</span>
+            </li>
+          </ul>
+        </div>
+        <div className="p-6 rounded-xl bg-blue-600/10 border border-blue-500/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/20">
+          <h3 className="text-xl font-semibold mb-4">PhyNews Way</h3>
+          <ul className="space-y-4">
+            <li className="flex items-start">
+              <span className="text-green-500 mr-2">✓</span>
+              <span>Concise, AI-powered summaries</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-green-500 mr-2">✓</span>
+              <span>Listen while commuting or exercising</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-green-500 mr-2">✓</span>
+              <span>Stay updated across multiple fields</span>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -134,26 +138,33 @@ function FeaturesSection() {
   );
 }
 
+function LandingPage() {
+  return (
+    <main>
+      <HeroSection />
+      <ComparisonSection />
+      <FeaturesSection />
+    </main>
+  );
+}
+
 function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
         <Navbar />
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route
-            path="/"
-            element={
-              <main>
-                <HeroSection />
-                <ComparisonSection />
-                <FeaturesSection />
-              </main>
-            }
-          />
+          <Route path="/physics" element={<Physics />} />
+          <Route path="/physics/astrophysics" element={<AstrophysicsCategories />} />
+          <Route path="/physics/astrophysics/:categoryId" element={<PhysicsCategory />} />
+          <Route path="/physics/:categoryId" element={<PhysicsCategory />} />
+          <Route path="/cs" element={<CSCategories />} />
+          <Route path="/cs/:categoryId" element={<PhysicsCategory />} />
         </Routes>
         <Footer />
         <CookieBanner />

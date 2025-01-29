@@ -6,10 +6,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { feedback } = req.body;
+  const { subject, feedback, email } = req.body;
 
-  if (!feedback) {
-    return res.status(400).json({ error: 'Feedback is required' });
+  if (!feedback || !subject || !email) {
+    return res.status(400).json({ error: 'All fields are required' });
   }
 
   try {
@@ -30,10 +30,17 @@ export default async function handler(req, res) {
     // Send the email
     const info = await transporter.sendMail({
       from: '"PhyNews Feedback" <feedback@phynews.com>',
-      to: 'support@phynews.com',
-      subject: 'New User Feedback',
+      to: email,
+      subject: subject,
       text: feedback,
-      html: `<p>${feedback}</p>`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2563eb;">PhyNews Feedback</h2>
+          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px;">
+            <p style="margin-bottom: 20px;">${feedback}</p>
+          </div>
+        </div>
+      `,
     });
 
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));

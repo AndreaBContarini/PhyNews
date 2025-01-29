@@ -55,7 +55,16 @@ export default function Footer() {
         
         <div className="mt-8 pt-8 border-t border-gray-800">
           <p className="text-gray-400 text-center">
-            © {new Date().getFullYear()} PhyNews. All rights reserved.
+            © {new Date().getFullYear()} PhyNews. All rights reserved. {' '}
+            <span className="text-gray-500">|</span>{' '}
+            <a 
+              href="https://www.martes-ai.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-gray-400 hover:text-blue-400 transition-colors"
+            >
+              Powered by Martes AI
+            </a>
           </p>
         </div>
       </div>

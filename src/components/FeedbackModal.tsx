@@ -7,6 +7,7 @@ interface FeedbackModalProps {
 }
 
 export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
+  const [subject, setSubject] = useState('');
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,37 +21,67 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
     setError(null);
 
     try {
-      const response = await fetch('/api/feedback', {
+      console.log('Sending feedback...');
+      const response = await fetch('http://localhost:3001/api/feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ feedback }),
+        body: JSON.stringify({ 
+          subject: `Feedback PhyNews: ${subject}`,
+          feedback
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send feedback');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send feedback');
       }
 
       setSuccess(true);
-      setTimeout(() => {
-        onClose();
-        setFeedback('');
-        setSuccess(false);
-      }, 2000);
+      setSubject('');
+      setFeedback('');
+      
     } catch (err) {
+      console.error('Feedback error:', err);
       setError(err instanceof Error ? err.message : 'Failed to send feedback');
     } finally {
       setLoading(false);
     }
   };
 
+  if (success) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-gray-800 rounded-lg max-w-lg w-full p-6 relative">
+          <button
+            onClick={() => {
+              onClose();
+              setSuccess(false);
+            }}
+            className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="text-center py-8">
+            <h3 className="text-xl font-semibold mb-2">Thank you for your feedback!</h3>
+            <p className="text-gray-400">
+              Your input helps us improve PhyNews and make it better for everyone.
+              We appreciate your contribution to our growth!
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-gray-800 rounded-lg max-w-lg w-full p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
         >
           <X className="w-5 h-5" />
         </button>
@@ -58,6 +89,17 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         <h2 className="text-xl font-semibold mb-4">Send Feedback</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <input
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Subject of your feedback"
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            />
+          </div>
+          
           <div>
             <textarea
               value={feedback}
@@ -74,12 +116,6 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             </div>
           )}
 
-          {success && (
-            <div className="text-green-500 text-sm bg-green-500/10 p-3 rounded-md">
-              Feedback sent successfully!
-            </div>
-          )}
-
           <div className="flex justify-end gap-2">
             <button
               type="button"
@@ -89,14 +125,8 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
               Cancel
             </button>
             <button
-              type="reset"
-              className="px-4 py-2 text-sm bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
-            >
-              Clear
-            </button>
-            <button
               type="submit"
-              disabled={loading || !feedback.trim()}
+              disabled={loading || !feedback.trim() || !subject.trim()}
               className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Send feedback

@@ -11,16 +11,44 @@ import {
   Dna, 
   Hash 
 } from 'lucide-react';
+
 const topics = [
-  { id: 'physics', name: 'Physics', icon: Atom, description: 'Latest discoveries in Particle Physics, Biological Physics, Astrophysics, and more...' },
-  { id: 'economics', name: 'Economics', icon: LineChart, description: 'Research in economic theory and empirical studies' },
-  { id: 'cs', name: 'Computer Science', icon: Code, description: 'Advances in algorithms, AI, and software engineering' },
-  { id: 'eess', name: 'Electrical Engineering', icon: Cpu, description: 'Research in circuits, systems, and signal processing' },
-  { id: 'stats', name: 'Statistics', icon: BarChart2, description: 'Developments in statistical methods and theory' },
+  {
+    id: 'cs',
+    name: 'Computer Science',
+    description: 'Latest advances in artificial intelligence, algorithms, and computational theory',
+    icon: Code,
+    color: 'green'
+  },
+  {
+    id: 'economics',
+    name: 'Economics',
+    icon: LineChart,
+    description: 'Research in economic theory and empirical studies'
+  },
+  {
+    id: 'eess',
+    name: 'Electrical Engineering',
+    icon: Cpu,
+    description: 'Research in circuits, systems, and signal processing'
+  },
+  {
+    id: 'physics',
+    name: 'Physics',
+    description: 'Cutting-edge research in quantum mechanics, relativity, particle physics, and cosmology',
+    icon: Atom,
+    color: 'blue'
+  },
+  {
+    id: 'stats',
+    name: 'Statistics',
+    icon: BarChart2,
+    description: 'Developments in statistical methods and theory'
+  },
   { id: 'q-fin', name: 'Quantitative Finance', icon: DollarSign, description: 'Mathematical approaches to financial markets' },
   { id: 'q-bio', name: 'Quantitative Biology', icon: Dna, description: 'Mathematical modeling in biological systems' },
   { id: 'math', name: 'Mathematics', icon: Hash, description: 'Pure and applied mathematical research' }
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -36,9 +64,14 @@ export default function Dashboard() {
     checkAuth();
   }, [navigate]);
 
-  const handleTopicSelect = async (topicId: string) => {
-    setSelectedTopic(topicId);
-    // Non navighiamo più direttamente, lasciamo che l'utente clicchi su View Articles
+  const handleViewArticles = (topic: any) => {
+    if (topic.id === 'physics') {
+      navigate('/physics');
+    } else if (topic.id === 'cs') {
+      navigate('/cs');
+    } else {
+      navigate(`/articles/${topic.id}`);
+    }
   };
 
   return (
@@ -60,7 +93,7 @@ export default function Dashboard() {
             return (
               <div key={topic.id} className="flex flex-col">
                 <button
-                  onClick={() => handleTopicSelect(topic.id)}
+                  onClick={() => setSelectedTopic(topic.id)}
                   className={`p-6 rounded-xl text-center transition-all duration-300 ${
                     isSelected
                       ? 'bg-blue-600 scale-102 shadow-lg shadow-blue-500/30 ring-2 ring-blue-400'
@@ -78,14 +111,13 @@ export default function Dashboard() {
                   </p>
                 </button>
                 
-                {/* Selection info and button appear below the card */}
                 {isSelected && (
                   <div className="mt-3 text-center animate-fade-in">
                     <button
-                      onClick={() => navigate(`/articles/${topic.id}`)}
+                      onClick={() => handleViewArticles(topic)}
                       className="w-full px-6 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 font-medium transform hover:translate-y-[-2px]"
                     >
-                      View Articles
+                      Choose subject
                     </button>
                   </div>
                 )}
