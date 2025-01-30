@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
+import { Heart } from 'lucide-react';
 
 interface ArxivArticle {
   title: string;
@@ -12,6 +13,7 @@ interface ArxivArticle {
   id: string;
   conclusions: string | null;
   pdfUrl: string;
+  isLiked?: boolean;
 }
 
 export default function PhysicsCategory() {
@@ -23,6 +25,7 @@ export default function PhysicsCategory() {
   const [error, setError] = useState<string | null>(null);
   const [loadingConclusions, setLoadingConclusions] = useState(false);
   const [isReading, setIsReading] = useState(false);
+  const [likedArticles, setLikedArticles] = useState<Set<string>>(new Set());
 
   // Mappa delle categorie con i rispettivi codici arXiv
   const categoryToArxivCode: { [key: string]: string } = {
@@ -266,6 +269,67 @@ export default function PhysicsCategory() {
     }
   };
 
+  // Funzione per gestire il like di un articolo
+  const handleLikeArticle = async (articleId: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const isCurrentlyLiked = likedArticles.has(articleId);
+      
+      if (isCurrentlyLiked) {
+        // Rimuovi il like
+        await supabase
+          .from('article_likes')
+          .delete()
+          .match({ user_id: user.id, article_id: articleId });
+        
+        setLikedArticles(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(articleId);
+          return newSet;
+        });
+      } else {
+        // Aggiungi il like e salva le features dell'articolo
+        const article = articles.find(a => a.id === articleId);
+        if (!article) return;
+
+        await supabase.from('article_likes').insert({
+          user_id: user.id,
+          article_id: articleId,
+          category: categoryId,
+          title: article.title,
+          authors: article.authors,
+          abstract: article.abstract,
+          timestamp: new Date().toISOString()
+        });
+
+        setLikedArticles(prev => new Set([...prev, articleId]));
+      }
+    } catch (error) {
+      console.error('Error handling article like:', error);
+    }
+  };
+
+  // Carica i like dell'utente all'avvio
+  useEffect(() => {
+    const loadUserLikes = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: likes } = await supabase
+        .from('article_likes')
+        .select('article_id')
+        .eq('user_id', user.id);
+
+      if (likes) {
+        setLikedArticles(new Set(likes.map(like => like.article_id)));
+      }
+    };
+
+    loadUserLikes();
+  }, []);
+
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -284,7 +348,7 @@ export default function PhysicsCategory() {
         setLoading(true);
         try {
           const response = await fetch(
-            `http://export.arxiv.org/api/query?search_query=cat:${arxivCode}&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending`
+            `https://export.arxiv.org/api/query?search_query=cat:${arxivCode}&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending`
           );
           const data = await response.text();
           const parser = new DOMParser();
@@ -303,7 +367,8 @@ export default function PhysicsCategory() {
               published: entry.getElementsByTagName('published')[0]?.textContent || '',
               id: entry.getElementsByTagName('id')[0]?.textContent || '',
               conclusions: null,
-              pdfUrl: ''
+              pdfUrl: '',
+              isLiked: likedArticles.has(entry.getElementsByTagName('id')[0]?.textContent || '')
             };
           });
 
@@ -318,7 +383,7 @@ export default function PhysicsCategory() {
     };
 
     fetchArxivArticles();
-  }, [categoryId]);
+  }, [categoryId, likedArticles]);
 
   const handleArticleClick = (article: ArxivArticle) => {
     setSelectedArticle(selectedArticle?.id === article.id ? null : article);
@@ -462,17 +527,36 @@ export default function PhysicsCategory() {
                 key={article.id}
                 className="bg-gray-800/50 rounded-lg p-6 hover:bg-gray-800/80 transition-all duration-300"
               >
-                <div 
-                  className="cursor-pointer"
-                  onClick={() => handleArticleClick(article)}
-                >
-                  <h2 className="text-xl font-semibold mb-2">{formatText(article.title)}</h2>
-                  <p className="text-gray-400 mb-2">
-                    {article.authors.join(', ')}
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    Published: {new Date(article.published).toLocaleDateString()}
-                  </p>
+                <div className="flex justify-between items-start">
+                  <div 
+                    className="cursor-pointer flex-1"
+                    onClick={() => handleArticleClick(article)}
+                  >
+                    <h2 className="text-xl font-semibold mb-2">{formatText(article.title)}</h2>
+                    <p className="text-gray-400 mb-2">
+                      {article.authors.join(', ')}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Published: {new Date(article.published).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLikeArticle(article.id);
+                    }}
+                    className={`p-2 rounded-full transition-all duration-300 ${
+                      likedArticles.has(article.id)
+                        ? 'text-red-500 hover:bg-red-500/10'
+                        : 'text-gray-400 hover:text-red-500 hover:bg-gray-700/50'
+                    }`}
+                  >
+                    <Heart 
+                      className={`w-6 h-6 ${
+                        likedArticles.has(article.id) ? 'fill-current' : ''
+                      }`}
+                    />
+                  </button>
                 </div>
                 
                 {selectedArticle?.id === article.id && (

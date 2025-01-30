@@ -11,6 +11,7 @@ import Physics from './pages/Physics';
 import PhysicsCategory from './pages/PhysicsCategory';
 import CSCategories from './pages/CSCategories';
 import AstrophysicsCategories from './pages/AstrophysicsCategories';
+import Features from './pages/Features';
 import CookieBanner from './components/CookieBanner';
 
 function HeroSection() {
@@ -159,6 +160,7 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/features" element={<Features />} />
           <Route path="/physics" element={<Physics />} />
           <Route path="/physics/astrophysics" element={<AstrophysicsCategories />} />
           <Route path="/physics/astrophysics/:categoryId" element={<PhysicsCategory />} />

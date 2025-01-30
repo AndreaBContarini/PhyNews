@@ -38,6 +38,7 @@ export default function Navbar() {
 
   const menuItems: MenuItem[] = user ? [
     { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Preferences', href: '/preferences' },
     { label: 'Features', href: '/features' },
     { label: 'Pricing', href: '/pricing' },
     { 
