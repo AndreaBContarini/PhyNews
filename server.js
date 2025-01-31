@@ -8,9 +8,13 @@ dotenv.config();
 
 const app = express();
 
-// Configurazione CORS
+// Configurazione CORS aggiornata per includere Netlify
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://phynewsbeta1.netlify.app'
+  ],
   methods: ['POST', 'GET', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));

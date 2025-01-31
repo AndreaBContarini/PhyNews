@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Atom, MessageSquare, Menu as MenuIcon, X } from 'lucide-react';
+import { MessageSquare, Menu as MenuIcon, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { User } from '@supabase/supabase-js';
 import FeedbackModal from './FeedbackModal';
+import LogoPhyNews from '../assets/LogoPhyNews.png';
 
 interface MenuItem {
   label: string;
@@ -62,7 +63,11 @@ export default function Navbar() {
                 to="/" 
                 className="flex items-center space-x-2 text-2xl font-bold text-white hover:text-blue-500 transition-colors"
               >
-                <Atom className="w-8 h-8" />
+                <img 
+                  src={LogoPhyNews} 
+                  alt="PhyNews Logo" 
+                  className="w-8 h-8" 
+                />
                 <span>PhyNews</span>
               </Link>
             </div>

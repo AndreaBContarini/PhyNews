@@ -202,13 +202,14 @@ export default function Preferences() {
     return articles.map(article => {
       let score = 0;
       let matchReasons: string[] = [];
+          // Start of Selection
 
-      // 1. Category match
-      const categoryMatch = features.topCategories.find(c => c.category === article.category);
-      if (categoryMatch) {
-        score += (categoryMatch.count / features.topCategories[0].count) * 0.3;
-        matchReasons.push('Category match');
-      }
+          // 1. Category match
+          const categoryMatch = features.topCategories.find((c: { category: string; count: number }) => c.category === article.category);
+          if (categoryMatch) {
+            score += (categoryMatch.count / features.topCategories[0].count) * 0.3;
+            matchReasons.push('Category match');
+          }
 
       // 2. Author match
       const authorMatch = article.authors.some(author =>

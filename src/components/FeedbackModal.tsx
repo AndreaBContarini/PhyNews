@@ -22,7 +22,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
     try {
       console.log('Sending feedback...');
-      const response = await fetch('https://localhost:3001/api/feedback', {
+      const response = await fetch('https://localhost:5173/api/feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

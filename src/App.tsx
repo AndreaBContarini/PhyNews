@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Atom, Brain, Volume2, BarChart } from 'lucide-react';
+import { Brain, Volume2, BarChart } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Auth from './pages/Auth';
@@ -13,6 +13,8 @@ import CSCategories from './pages/CSCategories';
 import AstrophysicsCategories from './pages/AstrophysicsCategories';
 import Features from './pages/Features';
 import CookieBanner from './components/CookieBanner';
+import LogoPhyNews from './assets/LogoPhyNews.png'; // Importa il logo
+
 
 function HeroSection() {
   return (
@@ -20,7 +22,11 @@ function HeroSection() {
       <div className="space-y-8">
         <div className="relative inline-block animate-fade-in-down perspective-1000">
           <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-20 rounded-full animate-pulse"></div>
-          <Atom className="w-20 h-20 mx-auto text-blue-500 relative animate-spin-3d transform-gpu" />
+          <img
+            src={LogoPhyNews}
+            alt="Logo PhyNews"
+            className="w-20 h-20 mx-auto text-blue-500 relative animate-spin-3d transform-gpu"
+          />
         </div>
         <div className="space-y-4">
           <h1 className="text-5xl font-bold tracking-tight">
