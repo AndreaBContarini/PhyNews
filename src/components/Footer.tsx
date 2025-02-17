@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Twitter, Linkedin } from 'lucide-react';
-import LogoPhyNews from '/Users/andrea/Desktop/PhyNews/PhyNews/src/assets/LogoPhyNews.png';
+import LogoPhyNews from '/../../assets/LogoPhyNews.png';
 
 export default function Footer() {
   return (
