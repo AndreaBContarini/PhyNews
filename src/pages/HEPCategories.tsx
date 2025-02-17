@@ -44,6 +44,15 @@ export default function HEPCategories() {
     checkAuth();
   }, [navigate]);
 
+  const formatPublishedDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('it-IT', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 pt-20 px-4">
       <div className="max-w-7xl mx-auto py-12">

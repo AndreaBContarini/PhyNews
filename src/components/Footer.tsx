@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Atom, Twitter, Linkedin } from 'lucide-react';
+import { Twitter, Linkedin } from 'lucide-react';
+import LogoPhyNews from '/Users/andrea/Desktop/PhyNews/PhyNews/src/assets/LogoPhyNews.png';
 
 export default function Footer() {
   return (
@@ -9,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <Atom className="w-8 h-8 text-blue-500" />
+              <img src={LogoPhyNews} alt="PhyNews Logo" className="w-8 h-8" />
               <span className="font-bold text-xl">PhyNews</span>
             </div>
             <p className="text-gray-400">

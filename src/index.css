@@ -13,14 +13,26 @@
 
 @layer utilities {
   .animation-delay-300 {
-    animation-delay: 1000ms;
+    animation-delay: 300ms;
   }
-  .perspective-300 {
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+  .animation-delay-700 {
+    animation-delay: 700ms;
+  }
+  .animation-delay-900 {
+    animation-delay: 900ms;
+  }
+  .animation-delay-1100 {
+    animation-delay: 1100ms;
+  }
+  .perspective-1000 {
     perspective: 1000px;
   }
   .transform-gpu {
-    transform-style: preserve-3d;
-    backface-visibility: visible;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 }
 
@@ -29,6 +41,23 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
 .animate-fade-in {
   animation: fadeIn 1s ease-out forwards;
+}
+
+.delay-1000 {
+  animation-delay: 1000ms;
 }

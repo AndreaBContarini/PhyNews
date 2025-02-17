@@ -536,9 +536,25 @@ export default function PhysicsCategory() {
                     <p className="text-gray-400 mb-2">
                       {article.authors.join(', ')}
                     </p>
-                    <p className="text-gray-500 text-sm">
-                      Published: {new Date(article.published).toLocaleDateString()}
-                    </p>
+                    <div className="flex items-center gap-4 text-sm">
+                      <p className="text-gray-500">
+                        Published: {new Date(article.published).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                        })}
+                      </p>
+                      <a 
+                        href={`https://arxiv.org/abs/${article.id.split('/').pop()}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:text-blue-300 transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        View on arXiv →
+                      </a>
+                    </div>
                   </div>
                   <button
                     onClick={(e) => {
@@ -624,4 +640,4 @@ export default function PhysicsCategory() {
       </div>
     </div>
   );
-} 
+}
